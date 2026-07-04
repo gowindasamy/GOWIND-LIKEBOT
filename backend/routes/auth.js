@@ -1,40 +1,55 @@
-const express = require("express");
-const router = express.Router();
-
-const {
-    login,
-    logout,
-    changePassword
-} = require("../auth");
-
-// Login
-router.post("/login", login);
-
-// Logout
-router.post("/logout", logout);
-
-// Change Password
-router.post("/change-password", changePassword);
-
-module.exports = router;
-// ======================================
+// ==========================================
 // GOWIND LIKEBOT
 // Authentication Routes
-// ======================================
+// Instagram Likes Only
+// ==========================================
 
 const express = require("express");
 const router = express.Router();
 
-const auth = require("../auth");
+const authController = require("../controllers/authController");
 
+// ==========================================
 // Login
-router.post("/login", auth.login);
+// POST /api/auth/login
+// ==========================================
+router.post("/login", authController.login);
 
+// ==========================================
+// Register
+// POST /api/auth/register
+// ==========================================
+router.post("/register", authController.register);
+
+// ==========================================
 // Logout
-router.post("/logout", auth.logout);
+// POST /api/auth/logout
+// ==========================================
+router.post("/logout", authController.logout);
 
+// ==========================================
 // Change Password
-router.post("/change-password", auth.changePassword);
+// POST /api/auth/change-password
+// ==========================================
+router.post("/change-password", authController.changePassword);
 
-// Export
+// ==========================================
+// Verify Token
+// GET /api/auth/verify
+// ==========================================
+router.get("/verify", (req, res) => {
+
+    res.json({
+
+        success: true,
+
+        message: "Token verification will be implemented."
+
+    });
+
+});
+
+// ==========================================
+// Export Router
+// ==========================================
 module.exports = router;
