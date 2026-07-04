@@ -1,30 +1,58 @@
 // ======================================
 // GOWIND LIKEBOT
-// IndianSMM Store API Routes
+// Provider API Routes
 // Instagram Likes Only
 // ======================================
 
 const express = require("express");
 const router = express.Router();
 
-const api = require("../api");
+const {
+    getBalance,
+    getServices,
+    createApiOrder,
+    getOrderStatus,
+    refillOrder,
+    cancelOrder
+} = require("../api");
 
+// ======================================
 // Provider Balance
-router.get("/balance", api.getBalance);
+// GET /api/provider/balance
+// ======================================
+router.get("/balance", getBalance);
 
+// ======================================
 // Provider Services
-router.get("/services", api.getServices);
+// GET /api/provider/services
+// ======================================
+router.get("/services", getServices);
 
+// ======================================
 // Create Instagram Likes Order
-router.post("/add", api.createApiOrder);
+// POST /api/provider/order
+// ======================================
+router.post("/order", createApiOrder);
 
+// ======================================
 // Check Order Status
-router.post("/status", api.getOrderStatus);
+// POST /api/provider/status
+// ======================================
+router.post("/status", getOrderStatus);
 
+// ======================================
 // Refill Order
-router.post("/refill", api.refillOrder);
+// POST /api/provider/refill
+// ======================================
+router.post("/refill", refillOrder);
 
+// ======================================
 // Cancel Order
-router.post("/cancel", api.cancelOrder);
+// POST /api/provider/cancel
+// ======================================
+router.post("/cancel", cancelOrder);
 
+// ======================================
+// Export Router
+// ======================================
 module.exports = router;
