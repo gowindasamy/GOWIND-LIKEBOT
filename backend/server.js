@@ -8,18 +8,23 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
+
+// Routes
+const authRoutes = require("./routes/auth");
+
+// Config
 const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Home Route
+// Home
 app.get("/", (req, res) => {
-    res.status(200).json({
+    res.json({
         success: true,
         project: "GOWIND LIKEBOT",
-        version: "1.0.0",
+        version: "1.1.0",
         server: "Running",
         database: "Ready",
         developer: "Govindasamy"
@@ -28,13 +33,16 @@ app.get("/", (req, res) => {
 
 // Health Check
 app.get("/health", (req, res) => {
-    res.status(200).json({
+    res.json({
         success: true,
         status: "OK"
     });
 });
 
-// 404 Route
+// API Routes
+app.use("/api/auth", authRoutes);
+
+// 404
 app.use((req, res) => {
     res.status(404).json({
         success: false,
@@ -44,5 +52,5 @@ app.use((req, res) => {
 
 // Start Server
 app.listen(PORT, () => {
-    console.log(`🚀 GOWIND LIKEBOT Server running on port ${PORT}`);
+    console.log(`🚀 Server running on port ${PORT}`);
 });
