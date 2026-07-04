@@ -14,6 +14,7 @@ const app = express();
 // Routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
+const orderRoutes = require("./routes/orders");
 
 // Config
 const PORT = process.env.PORT || 3000;
@@ -29,7 +30,7 @@ app.get("/", (req, res) => {
     res.status(200).json({
         success: true,
         project: "GOWIND LIKEBOT",
-        version: "1.1.0",
+        version: "1.2.0",
         server: "Running",
         database: "Ready",
         developer: "Govindasamy"
@@ -51,6 +52,7 @@ app.get("/health", (req, res) => {
 // ==========================================
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/orders", orderRoutes);
 
 // ==========================================
 // 404 Handler
@@ -67,7 +69,7 @@ app.use((req, res) => {
 // ==========================================
 app.listen(PORT, () => {
     console.log("====================================");
-    console.log(" GOWIND LIKEBOT SERVER STARTED ");
+    console.log("🚀 GOWIND LIKEBOT SERVER STARTED");
     console.log("====================================");
     console.log(`Server : http://localhost:${PORT}`);
     console.log(`Port   : ${PORT}`);
