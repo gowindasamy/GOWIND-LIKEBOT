@@ -1,24 +1,37 @@
-// ======================================
+// ==========================================
 // GOWIND LIKEBOT
 // Database Module
-// ======================================
+// MongoDB Atlas
+// ==========================================
 
 const mongoose = require("mongoose");
 
-// Connect MongoDB
+// ==========================================
+// Connect Database
+// ==========================================
 async function connectDatabase() {
 
     try {
 
-        await mongoose.connect(process.env.MONGODB_URI);
+        await mongoose.connect(process.env.MONGODB_URI, {
 
-        console.log("✅ MongoDB Connected");
+            autoIndex: true
+
+        });
+
+        console.log("======================================");
+        console.log("✅ MongoDB Connected Successfully");
+        console.log("Database :", mongoose.connection.name);
+        console.log("Host     :", mongoose.connection.host);
+        console.log("Status   : Connected");
+        console.log("======================================");
 
     } catch (error) {
 
-        console.error("❌ Database Connection Failed");
-
-        console.error(error.message);
+        console.log("======================================");
+        console.log("❌ MongoDB Connection Failed");
+        console.log(error.message);
+        console.log("======================================");
 
         process.exit(1);
 
@@ -26,40 +39,82 @@ async function connectDatabase() {
 
 }
 
+// ==========================================
 // Disconnect Database
+// ==========================================
 async function disconnectDatabase() {
 
     try {
 
         await mongoose.disconnect();
 
-        console.log("✅ MongoDB Disconnected");
+        console.log("======================================");
+        console.log("MongoDB Disconnected");
+        console.log("======================================");
 
     } catch (error) {
 
-        console.error(error.message);
+        console.log(error.message);
 
     }
 
 }
 
+// ==========================================
 // Database Status
-async function getDatabaseStatus(req, res) {
+// ==========================================
+function getDatabaseStatus() {
 
-    return res.json({
+    if (mongoose.connection.readyState === 1) {
 
-        success: true,
+        return "Connected";
 
-        database: mongoose.connection.readyState === 1
-            ? "Connected"
-            : "Disconnected"
+    }
 
-    });
+    if (mongoose.connection.readyState === 2) {
+
+        return "Connecting";
+
+    }
+
+    if (mongoose.connection.readyState === 3) {
+
+        return "Disconnecting";
+
+    }
+
+    return "Disconnected";
 
 }
 
+// ==========================================
+// Database Information
+// ==========================================
+function getDatabaseInfo() {
+
+    return {
+
+        database: mongoose.connection.name,
+
+        host: mongoose.connection.host,
+
+        status: getDatabaseStatus()
+
+    };
+
+}
+
+// ==========================================
+// Export
+// ==========================================
 module.exports = {
+
     connectDatabase,
+
     disconnectDatabase,
-    getDatabaseStatus
+
+    getDatabaseStatus,
+
+    getDatabaseInfo
+
 };
