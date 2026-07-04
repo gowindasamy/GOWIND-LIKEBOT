@@ -1,10 +1,14 @@
 // ==========================================
 // GOWIND LIKEBOT
 // Authentication Controller
-// Instagram Likes Only
 // ==========================================
 
 const User = require("../models/User");
+const { generateToken } = require("../utils/jwt");
+const {
+    hashPassword,
+    comparePassword
+} = require("../utils/password");
 
 // Login
 async function login(req, res) {
@@ -37,7 +41,7 @@ async function login(req, res) {
 
         }
 
-        if (user.password !== password) {
+        if (!comparePassword(password, user.password)) {
 
             return res.status(401).json({
 
@@ -48,18 +52,21 @@ async function login(req, res) {
 
         }
 
+        const token = generateToken(user);
+
         return res.json({
 
             success: true,
             message: "Login Successful",
+
+            token,
 
             user: {
 
                 id: user._id,
                 username: user.username,
                 role: user.role,
-                balance: user.balance,
-                status: user.status
+                balance: user.balance
 
             }
 
@@ -78,25 +85,72 @@ async function login(req, res) {
 
 }
 
-// Logout
-async function logout(req, res) {
+// Register User
+async function register(req, res) {
 
-    return res.json({
+    try {
 
-        success: true,
-        message: "Logout Successful"
+        const {
 
-    });
+            username,
+            password
+
+        } = req.body;
+
+        const exists = await User.findOne({
+
+            username
+
+        });
+
+        if (exists) {
+
+            return res.status(400).json({
+
+                success: false,
+                message: "Username already exists."
+
+            });
+
+        }
+
+        const user = new User({
+
+            username,
+
+            password: hashPassword(password)
+
+        });
+
+        await user.save();
+
+        res.json({
+
+            success: true,
+            message: "Registration Successful."
+
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+
+            success: false,
+            message: error.message
+
+        });
+
+    }
 
 }
 
-// Change Password
-async function changePassword(req, res) {
+// Logout
+async function logout(req, res) {
 
-    return res.json({
+    res.json({
 
         success: true,
-        message: "Change Password - Coming Soon"
+        message: "Logout Successful."
 
     });
 
@@ -105,7 +159,7 @@ async function changePassword(req, res) {
 module.exports = {
 
     login,
-    logout,
-    changePassword
+    register,
+    logout
 
 };
