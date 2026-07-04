@@ -3,52 +3,72 @@
 // Authentication Module
 // ======================================
 
-// User Login
+const users = [
+    {
+        username: "admin",
+        password: "admin123",
+        role: "admin"
+    },
+    {
+        username: "user",
+        password: "user123",
+        role: "user"
+    }
+];
+
+// Login
 function login(req, res) {
 
     const { username, password } = req.body;
 
     if (!username || !password) {
-        return res.json({
+        return res.status(400).json({
             success: false,
             message: "Username and Password are required."
         });
     }
 
-    // TODO:
-    // Check user in database
-    // Verify password
-    // Create session / JWT
+    const account = users.find(
+        user =>
+            user.username === username &&
+            user.password === password
+    );
 
-    return res.json({
+    if (!account) {
+        return res.status(401).json({
+            success: false,
+            message: "Invalid Username or Password."
+        });
+    }
+
+    return res.status(200).json({
         success: true,
-        message: "Login successful."
+        message: "Login Successful",
+        user: {
+            username: account.username,
+            role: account.role
+        }
     });
 }
 
 // Change Password
 function changePassword(req, res) {
 
-    // TODO:
-    // Verify old password
-    // Save new password
-
     return res.json({
         success: true,
-        message: "Password changed successfully."
+        message: "Change Password module coming soon."
     });
+
 }
 
 // Logout
 function logout(req, res) {
 
-    // TODO:
-    // Destroy session / remove token
-
     return res.json({
         success: true,
-        message: "Logged out successfully."
+        message: "Logout Successful."
     });
+
 }
 
 module.exports = {
