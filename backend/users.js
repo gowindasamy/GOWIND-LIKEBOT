@@ -1,19 +1,27 @@
 // ======================================
 // GOWIND LIKEBOT
-// User Management Module
+// User Module
 // ======================================
 
-// Get User Profile
+// User Profile
 function getProfile(req, res) {
 
-    // TODO:
-    // Get user details from database
-
-    return res.json({
+    res.json({
         success: true,
-        username: "Govind",
+        username: "user",
         balance: 0,
+        role: "user",
         status: "Active"
+    });
+
+}
+
+// User Balance
+function getBalance(req, res) {
+
+    res.json({
+        success: true,
+        balance: 0
     });
 
 }
@@ -23,12 +31,9 @@ function addBalance(req, res) {
 
     const { amount } = req.body;
 
-    // TODO:
-    // Add balance in database
-
-    return res.json({
+    res.json({
         success: true,
-        message: "Balance added successfully.",
+        message: "Balance Added",
         amount
     });
 
@@ -39,47 +44,31 @@ function deductBalance(req, res) {
 
     const { amount } = req.body;
 
-    // TODO:
-    // Deduct balance
-
-    return res.json({
+    res.json({
         success: true,
-        message: "Balance deducted successfully.",
+        message: "Balance Deducted",
         amount
     });
 
 }
 
-// Update User
-function updateUser(req, res) {
+// Change Username
+function updateUsername(req, res) {
 
-    // TODO:
-    // Update user information
+    const { username } = req.body;
 
-    return res.json({
+    res.json({
         success: true,
-        message: "User updated successfully."
-    });
-
-}
-
-// Delete User
-function deleteUser(req, res) {
-
-    // TODO:
-    // Delete user
-
-    return res.json({
-        success: true,
-        message: "User deleted successfully."
+        message: "Username Updated",
+        username
     });
 
 }
 
 module.exports = {
     getProfile,
+    getBalance,
     addBalance,
     deductBalance,
-    updateUser,
-    deleteUser
+    updateUsername
 };
